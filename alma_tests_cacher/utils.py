@@ -16,16 +16,14 @@ def get_config(config_path: Optional[Path] = None) -> Config:
 
 def prepare_gerrit_repo_url(url: str, username: str) -> str:
     parsed = urlparse(url)
-    return urlunparse(
-        (
-            parsed.scheme,
-            f'{username}@{parsed.netloc}',
-            parsed.path,
-            parsed.params,
-            parsed.query,
-            parsed.fragment,
-        )
-    )
+    return urlunparse((
+        parsed.scheme,
+        f'{username}@{parsed.netloc}',
+        parsed.path,
+        parsed.params,
+        parsed.query,
+        parsed.fragment,
+    ))
 
 
 def clone_git_repo(
