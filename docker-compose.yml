@@ -1,18 +1,8 @@
-version: "3.9"
 services:
   cacher:
     image: alma-tests-cacher:latest
     build:
       context: .
-      dockerfile: Dockerfile
-    restart: on-failure
+    command: "python3 alma_tests_cacher.py"
     volumes:
-      - "./alma_tests_cacher:/code/alma_tests_cacher"
-      - "./alma_tests_cacher.py:/code/alma_tests_cacher.py"
-      - "./requirements.txt:/code/requirements.txt"
-      - "./vars.yaml:/code/vars.yaml"
-    command: "bash -c '/wait_for_it.sh web_server:8000 &&
-              source env/bin/activate &&
-              pip3 install --upgrade pip &&
-              pip3 install -r /code/requirements.txt --no-cache-dir &&
-              python alma_tests_cacher.py'"
+      - ".:/code"

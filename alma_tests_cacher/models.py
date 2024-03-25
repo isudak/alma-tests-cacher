@@ -19,6 +19,7 @@ class PackageTestRepository(BaseModel):
 
 
 class TestRepository(BaseModel):
+    __test__ = False
     id: Union[int, str]
     name: str
     url: str

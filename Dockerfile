@@ -1,12 +1,26 @@
 FROM almalinux:9
 
-RUN mkdir -p /code && \
-    dnf update -y && \
-    dnf install git -y && \
-    dnf clean all
-RUN curl https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -o wait_for_it.sh && chmod +x wait_for_it.sh
-COPY ./requirements.txt /code/requirements.txt
-RUN cd /code && python3 -m venv env && source env/bin/activate && \
-    pip3 install --upgrade pip && pip3 install -r /code/requirements.txt --no-cache-dir
+RUN <<EOT
+  set -ex
+  umask 0077
+  mkdir -p ~/.ssh
+  printf 'Host github.com\n  StrictHostKeyChecking accept-new\n' >> ~/.ssh/config
+EOT
+
+RUN <<EOT
+  set -ex
+  dnf upgrade -y
+  dnf install -y git
+  dnf clean all
+EOT
+
 WORKDIR /code
-CMD ["/bin/bash", "-c", "source env/bin/activate && pip3 install --upgrade pip && pip3 install -r requirements.txt --no-cache-dir && python alma_tests_cacher.py"]
+COPY requirements.* .
+RUN <<EOT
+  set -ex
+  python3 -m ensurepip
+  pip3 install -r requirements.devel.txt
+  rm requirements.*
+EOT
+
+ADD --chmod=755 https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /
