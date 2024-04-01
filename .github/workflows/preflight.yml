@@ -67,7 +67,7 @@ jobs:
           filters: |
             py:
               - added|modified: '**/*.py'
-            cacher:
+            src:
               - added|modified: 'alma_tests_cacher/**/*.py'
               - added|modified: '*.py'
 
@@ -80,10 +80,10 @@ jobs:
               --cov-report=term | tee $REPORTS_DIR/pytest-output.txt"
 
       - name: Run pylint
-        if: ${{ steps.changed-files.outputs.cacher == 'true' }}
+        if: ${{ steps.changed-files.outputs.src == 'true' }}
         run: |
           docker compose run --rm cacher bash -c "
-            pylint --exit-zero ${{ steps.changed-files.outputs.cacher_files }} \
+            pylint --exit-zero ${{ steps.changed-files.outputs.src_files }} \
               | tee $REPORTS_DIR/pylint-report.txt"
 
       - name: Run black
@@ -101,10 +101,10 @@ jobs:
               | tee >(sed 's/\x1B\[[0-9;]*m//g' > $REPORTS_DIR/isort-report.txt)"
 
       - name: Run bandit
-        if: ${{ steps.changed-files.outputs.cacher == 'true' }}
+        if: ${{ steps.changed-files.outputs.src == 'true' }}
         run: |
           docker compose run --rm cacher bash -c "
-            bandit -c pyproject.toml ${{ steps.changed-files.outputs.cacher_files }} \
+            bandit -c pyproject.toml ${{ steps.changed-files.outputs.src_files }} \
               | tee >(sed 's/\x1B\[[0-9;]*m//g' > $REPORTS_DIR/bandit-report.txt)"
 
       - name: Generate .md reports
