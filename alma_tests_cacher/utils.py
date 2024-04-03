@@ -35,7 +35,6 @@ def clone_git_repo(
         .with_cwd(workdir_path)
         .run(
             ['clone', repo_url],
-            retcode=None,
         )
     )
 
