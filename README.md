@@ -1,7 +1,7 @@
 # AlmaLinux tests cacher
 
 <picture>
-  <img alt="Test Coverage" src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/maccelf/809b43cccaf8256b03fc0103e245eefc/raw/alma-tests-cacher-badge__main.json">
+  <img alt="Test Coverage" src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/andrewlukoshko/7142370c45ed5dcbed30a99ece77dcd1/raw/coverage-badge.json">
 </picture>
 <br/><br/>
 
