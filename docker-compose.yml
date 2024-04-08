@@ -3,6 +3,15 @@ services:
     image: alma-tests-cacher:latest
     build:
       context: .
+      target: cacher
     command: "python3 alma_tests_cacher.py"
+    volumes:
+      - ".:/code"
+
+  cacher_tests:
+    image: alma-tests-cacher-tests:latest
+    build:
+      context: .
+      target: cacher-tests
     volumes:
       - ".:/code"
