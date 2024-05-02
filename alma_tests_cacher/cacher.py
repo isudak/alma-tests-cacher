@@ -177,7 +177,11 @@ class AlmaTestsCacher:
             repo_dir = Path(workdir, repo_dirname)
             if not repo_dir.exists():
                 self.logger.info('Start cloning git repo: %s', repo.url)
-                exit_code, stdout, stderr = clone_git_repo(workdir, repo.url)
+                try:
+                    exit_code, stdout, stderr = clone_git_repo(workdir, repo.url)
+                except Exception:
+                    self.logger.exception('Cannot clone git repo:')
+                    return
                 self.logger.debug(
                     'Clone result:\nexit_code: %s\nstdout: %s\nstderr: %s',
                     exit_code,

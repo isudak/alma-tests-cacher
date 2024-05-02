@@ -116,11 +116,30 @@ def mock_bulk_create(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
     monkeypatch.setattr(AlmaTestsCacher, 'bulk_create_test_folders', func)
 
 
+@pytest.fixture
+def mock_clone_git_repo(
+    monkeypatch: pytest.MonkeyPatch,
+    repo_payload: TestRepository,
+):
+    def func(workdir: str, repo_url: str):
+        tests_dir = Path(
+            workdir,
+            repo_url.split('/')[-1].replace('.git', ''),
+            repo_payload.tests_dir,
+        )
+        for i in range(1, 5):
+            Path(tests_dir, f'{repo_payload.tests_prefix}{i}').mkdir(parents=True, exist_ok=True)
+        return 0, '', ''
+
+    monkeypatch.setattr('alma_tests_cacher.cacher.clone_git_repo', func)
+
+
 @pytest.mark.anyio
 @pytest.mark.usefixtures(
     'mock_get_test_repos',
     'mock_bulk_create',
     'mock_bulk_remove',
+    'mock_clone_git_repo'
 )
 async def test_cacher_run(
     cacher: AlmaTestsCacher,
