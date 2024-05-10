@@ -1,4 +1,4 @@
-aiohttp==3.9.3
+aiohttp==3.9.5
 pydantic==2.5.3
 pydantic-settings==2.1.0
 sentry-sdk==1.39.1
