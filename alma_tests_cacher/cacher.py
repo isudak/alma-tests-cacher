@@ -175,6 +175,7 @@ class AlmaTestsCacher:
                     self.gerrit_username,
                 )
             repo_dir = Path(workdir, repo_dirname)
+            self.logger.debug('Repository directory: %s', repo_dir)
             if not repo_dir.exists():
                 self.logger.info('Start cloning git repo: %s', repo.url)
                 try:
@@ -193,7 +194,7 @@ class AlmaTestsCacher:
                     'Pulling the latest changes for git repo: %s',
                     repo.url,
                 )
-                exit_code, stdout, stderr = git_pull(workdir)
+                exit_code, stdout, stderr = git_pull(str(repo_dir))
                 self.logger.debug(
                     'Pull result:\nexit_code: %s\nstdout: %s\nstderr: %s',
                     exit_code,
